@@ -10,6 +10,7 @@ import Wishlist.dao.WishlistDaoImpl;
 import Wishlist.dto.Wishlist;
 
 public class WishlistServiceImpl implements WishlistService {
+	boolean flag;
 	WishlistDao wishlistDao;
 	HashMap<Integer, Wishlist>hashMap;
 	HashMap<String,Wishlist>hashMap1;
@@ -29,19 +30,71 @@ public class WishlistServiceImpl implements WishlistService {
 		
 	}
 	@Override
-	public void addProduct() throws SQLException{
+	public void addProduct() throws Exception{
 		Scanner sc=new Scanner(System.in);
-		System.out.println("Enter the product name to add in wishlist");
+		flag=false;
 		Wishlist wishlist=new Wishlist();
-		wishlist.setProduct_Name(sc.next());
+		String n = null;
+		flag=false;
+		while(flag==false) {
+			System.out.println("Enter the product name");
+			
+		
+		 n=sc.next();
+		
+			 if(n.compareTo("null")==0) {
+				 
+				 System.out.println("Product Name cannot be null");
+				 
+				 continue;
+			 }
+			 else {
+				 
+				 wishlist.setProduct_Name(n);
+				 flag=true;
+				 
+			 }
+		}
+		
+		boolean flag=false;
+		do {
+			
 		
 		System.out.println("Enter the product cost");
-		wishlist.setCost(sc.nextInt());
+		boolean isCost=sc.hasNextInt();
+		int c=sc.nextInt();
+		if(isCost==true && c>0) {
+		wishlist.setCost(c);
+		flag=true;
+		}
+		else {
+			System.out.println("Invalid Cost");
+		}
+		}while(flag!=true);
+		String m=null;
+		flag=false;
+		while(flag==false) {
+			System.out.println("Enter the manufacturer name");
+			m=sc.next();
+			if(m.compareTo("null")==0) {
+				 
+				 System.out.println("Manufacturer Name cannot be null");
+				
+				 continue;
+			 }
+			 else {
+				 
+				 wishlist.setManufacturer(m);
+				 flag=true;
+				 
+			 }
+		}
 		
-		System.out.println("Enter the product manufacturer");
-		wishlist.setManufacturer(sc.next());
+		
 		
 		wishlistDao.Add_to_Wishlist(wishlist);
+		
+
 	}
 
 }
